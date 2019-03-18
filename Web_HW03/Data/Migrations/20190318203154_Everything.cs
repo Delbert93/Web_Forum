@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web_HW03.Migrations
 {
-    public partial class initialversion : Migration
+    public partial class Everything : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,7 +54,8 @@ namespace Web_HW03.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(nullable: true),
                     Body = table.Column<string>(nullable: true),
-                    Posted = table.Column<DateTime>(nullable: false)
+                    Posted = table.Column<DateTime>(nullable: false),
+                    Image = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -181,12 +182,39 @@ namespace Web_HW03.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    postId = table.Column<int>(nullable: false),
+                    Body = table.Column<string>(nullable: true),
+                    CommentsId = table.Column<int>(nullable: true),
+                    BlogPostId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_BlogPosts_BlogPostId",
+                        column: x => x.BlogPostId,
+                        principalTable: "BlogPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_Comments_CommentsId",
+                        column: x => x.CommentsId,
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PostTag",
                 columns: table => new
                 {
                     PostId = table.Column<int>(nullable: false),
-                    TagId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false)
+                    TagId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,6 +271,16 @@ namespace Web_HW03.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_BlogPostId",
+                table: "Comments",
+                column: "BlogPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_CommentsId",
+                table: "Comments",
+                column: "CommentsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PostTag_TagId",
                 table: "PostTag",
                 column: "TagId");
@@ -264,6 +302,9 @@ namespace Web_HW03.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "PostTag");

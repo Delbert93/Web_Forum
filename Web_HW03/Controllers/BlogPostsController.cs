@@ -78,6 +78,7 @@ namespace Web_HW03.Controllers
             var blogPost = await _context.BlogPosts
                 .Include(p=>p.PostTags)
                 .ThenInclude(pt=>pt.Tag)
+                .Include(c => c.Comments)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blogPost == null)
             {

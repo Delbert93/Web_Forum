@@ -7,15 +7,6 @@ using System.Threading.Tasks;
 
 namespace Web_HW03.Models
 {
-
-    public class Comments
-    {
-        public int Id { get; set; }
-        public int postId { get; set; }
-        public string Body { get; set; }
-        public DateTime Posted { get; set; }
-    }
-
     public class BlogPost
     {
         public int Id { get; set; }
@@ -24,6 +15,7 @@ namespace Web_HW03.Models
         public DateTime Posted { get; set; }
         public byte[] Image { get; set; }
         public List<PostTag> PostTags { get; set; }
+        public List<Comment> Comments { get; set; }
         [NotMapped]
         public string TagsString { get; set; }
 
@@ -175,7 +167,7 @@ namespace Web_HW03.Models
     {
         public int Id { get; set; }
         public string TagName { get; set; }
-        public List<PostTag> PostTags { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 
     public class PostTag
@@ -184,5 +176,15 @@ namespace Web_HW03.Models
         public BlogPost Post { get; set; }
         public int TagId { get; set; }
         public Tag Tag { get; set; }
+    }
+
+    public class Comment
+    {
+        public int Id { get; set; }
+        public BlogPost Post { get; set; }
+        public int postId { get; set; }
+        public int TagId { get; set; }
+        public string Body { get; set; }
+        public Tag Comments { get; set; }
     }
 }

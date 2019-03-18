@@ -26,13 +26,19 @@ namespace Web_HW03.Data
                     .WithMany(p => p.PostTags)
                 .HasForeignKey(pt => pt.PostId);
             
-            builder.Entity<PostTag>()
-                .HasOne(pt => pt.Tag)
-                    .WithMany(t => t.PostTags)
+            builder.Entity<Comment>()
+                .HasOne(pt => pt.Comments)
+                    .WithMany(t => t.Comments)
                 .HasForeignKey(pt => pt.TagId);
+
+            builder.Entity<Comment>()
+                .HasOne(pt => pt.Post)
+                    .WithMany(t => t.Comments)
+                .HasForeignKey(pt => pt.Id);
         }
         public DbSet<BlogPost> BlogPosts { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<Web_HW03.Models.PostTag> PostTag { get; set; }
+        public DbSet<PostTag> PostTag { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }

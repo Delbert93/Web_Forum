@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web_HW03.Data;
 
 namespace Web_HW03.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190318203154_Everything")]
+    partial class Everything
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,13 +193,33 @@ namespace Web_HW03.Migrations
                     b.ToTable("BlogPosts");
                 });
 
+            modelBuilder.Entity("Web_HW03.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("BlogPostId");
+
+                    b.Property<string>("Body");
+
+                    b.Property<int?>("CommentsId");
+
+                    b.Property<int>("postId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogPostId");
+
+                    b.HasIndex("CommentsId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Web_HW03.Models.PostTag", b =>
                 {
                     b.Property<int>("PostId");
 
                     b.Property<int>("TagId");
-
-                    b.Property<int>("Id");
 
                     b.HasKey("PostId", "TagId");
 
@@ -261,6 +283,17 @@ namespace Web_HW03.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Web_HW03.Models.Comment", b =>
+                {
+                    b.HasOne("Web_HW03.Models.BlogPost")
+                        .WithMany("Comments")
+                        .HasForeignKey("BlogPostId");
+
+                    b.HasOne("Web_HW03.Models.Comment", "Comments")
+                        .WithMany()
+                        .HasForeignKey("CommentsId");
                 });
 
             modelBuilder.Entity("Web_HW03.Models.PostTag", b =>

@@ -33,11 +33,11 @@ namespace Web_HW03.Controllers
                     return NotFound();
 
                 var tag = context.Tags
-                    .Include(t => t.PostTags)
+                    .Include(t => t.Comments)
                     .ThenInclude(pt=>pt.Post)
                     .Single(t => t.Id == id);
                 
-                return View("Index", tag.PostTags);
+                return View("Index", tag.Comments);
             }
             catch(Exception ex)
             {

@@ -9,8 +9,8 @@ using Web_HW03.Data;
 namespace Web_HW03.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190305233812_initialversion")]
-    partial class initialversion
+    [Migration("20190318205621_Everything1")]
+    partial class Everything1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -182,6 +182,8 @@ namespace Web_HW03.Migrations
 
                     b.Property<string>("Body");
 
+                    b.Property<byte[]>("Image");
+
                     b.Property<DateTime>("Posted");
 
                     b.Property<string>("Title");
@@ -191,13 +193,28 @@ namespace Web_HW03.Migrations
                     b.ToTable("BlogPosts");
                 });
 
+            modelBuilder.Entity("Web_HW03.Models.Comment", b =>
+                {
+                    b.Property<int>("Id");
+
+                    b.Property<string>("Body");
+
+                    b.Property<int>("TagId");
+
+                    b.Property<int>("postId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Web_HW03.Models.PostTag", b =>
                 {
                     b.Property<int>("PostId");
 
                     b.Property<int>("TagId");
-
-                    b.Property<int>("Id");
 
                     b.HasKey("PostId", "TagId");
 
@@ -263,6 +280,19 @@ namespace Web_HW03.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Web_HW03.Models.Comment", b =>
+                {
+                    b.HasOne("Web_HW03.Models.BlogPost", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Web_HW03.Models.Tag", "Comments")
+                        .WithMany("Comments")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Web_HW03.Models.PostTag", b =>
                 {
                     b.HasOne("Web_HW03.Models.BlogPost", "Post")
@@ -271,7 +301,7 @@ namespace Web_HW03.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Web_HW03.Models.Tag", "Tag")
-                        .WithMany("PostTags")
+                        .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
