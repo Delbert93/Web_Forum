@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace Web_HW03.Models
 {
+
+    public class Comments
+    {
+        public int Id { get; set; }
+        public int postId { get; set; }
+        public string Body { get; set; }
+        public DateTime Posted { get; set; }
+    }
+
     public class BlogPost
     {
         public int Id { get; set; }
